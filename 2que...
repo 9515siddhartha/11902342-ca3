@@ -1,0 +1,40 @@
+2question.	How to configure your Ec2 instances with Ansible
+
+To configure your EC2 instances with Ansible:
+
+ Install Ansible on your local machine
+
+sudo apt update
+sudo apt install ansible
+
+Configure the Ansible inventory file to specify the IP addresses or DNS names of the EC2 instances 
+
+arp[my_ec2_instances]
+to Create an Ansible playbook to configure the EC2 instances. playbook installs Apache web server on the EC2 instances:
+
+yaml
+- name: Install Apache on EC2 instances
+  hosts: my_ec2_instances
+  become: true
+
+  tasks:
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+
+  - name: Install Apache web server
+    apt:
+      name: apache2
+      state: present
+
+  - name: Start Apache web server
+    service:
+      name: apache2
+      state: started
+      enabled: true
+To  Run the Ansible playbook to configure the EC2 instances
+
+css
+
+ansible-playbook -i /path/to/inventory/file /path/to/playbook/file.yml
+After running the playbook, Ansible will configure the specified EC2 instances with Apache web server. We can modify the playbook to install other packages or configure other settings as needed.
